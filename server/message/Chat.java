@@ -36,8 +36,7 @@ public final class Chat implements Runnable{
     users = new ArrayList<User>();
   }
 
-  private void forwardMessage(int uid, String message){
-    message = users.get(uid).prepareMessage(message);
+  private void forwardMessage(String message){
     messages.add(message);
     PrintWriter out;
     for(int i=0;i<users.size();i++){
@@ -79,10 +78,13 @@ public final class Chat implements Runnable{
 
     do{
       for(i=0;i<users.size();i++){
-        in = new InputStreamReader(users.get(i).sock.getInputStream())
-        //out = new PrintWriter(users.get(i).sock.getOutputStream());
-
-        msg = br.getLine();
+        try{
+          in = new InputStreamReader(users.get(i).sock.getInputStream());
+          //out = new PrintWriter(users.get(i).sock.getOutputStream());
+          msg = br.readLine();
+        } catch(Exception e){
+          continue;
+        }
 
         if(msg == null){
           continue;
