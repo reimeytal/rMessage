@@ -2,30 +2,49 @@ package message;
 
 import message.Chat;
 import java.util.ArrayList;
+import java.net.Socket;
 
 public final class User{
 
   protected String name;
-  protected int id;
-  private ArrayList<Chat> chats;
+  private int id;
+  private Chat currentChat;
+  protected Socket sock;
 
   private static int nextId = 0;
 
-  public User(String name){
+  public User(String name, Socket usock){
     this.name = name;
-    this.chats = new ArrayList<Chat>();
+    currentChat = null;
     this.id = User.nextId;
     User.nextId++;
+    sock = usock;
+  }
+  
+  public boolean setChat(Chat c){
+    if(c.addUser(this)){
+      currentChat = c;
+      return true;
+    }
+    return false;
   }
 
-  public void sendMessage(int chatId, String message){
+  public void leaveChat(){
+    currentChat.removeUser(id);
+    currentChat = null;
+  }
+
+  public String prepareMessage(String message){
     String finalMessage = name + ": " + message;
     int i;
-    for(i=0;i<chats.size();i++){
-      if(chats.get(i).id == chatId){
-        chats.get(i).forwardMessage(finalMessage);
-        return;
-      }
-    }
+    return finalMessage;
+  }
+
+  public Socket getSocket(){
+    return sock;
+  }
+
+  public int getId(){
+    return id;
   }
 }
