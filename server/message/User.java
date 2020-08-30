@@ -8,33 +8,33 @@ public final class User{
 
   protected String name;
   private int id;
-  private Chat currentChat;
+  private ServerNode currentServerNode;
   protected Socket sock;
 
   private static int nextId = 0;
 
   public User(String name, Socket usock){
     this.name = name;
-    currentChat = null;
+    currentServerNode = null;
     this.id = User.nextId;
     User.nextId++;
     sock = usock;
   }
-  
-  public boolean setChat(Chat c){
+
+  public boolean setServerNode(ServerNode c){
     if(c.addUser(this)){
-      currentChat = c;
+      currentServerNode = c;
       return true;
     }
     return false;
   }
 
-  public void leaveChat(){
-    currentChat.removeUser(id);
-    currentChat = null;
+  public void leaveServerNode(){
+    currentServerNode.removeUser(id);
+    currentServerNode = null;
   }
 
-  public String prepareMessage(String message){
+  protected String prepareMessage(String message){
     String finalMessage = name + ": " + message;
     int i;
     return finalMessage;

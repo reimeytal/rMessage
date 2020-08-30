@@ -6,34 +6,12 @@ import java.io.InputStreamReader;
 import java.io.BufferedReader;
 import java.io.PrintWriter;
 
-enum Chattype{
-  PRIVATE(2),
-  GROUP(16);
-
-  protected int maxUsers;
-
-  private Chattype(int maxUsers){
-    this.maxUsers = maxUsers;
-  }
-  public int getMaxUsers(){
-    return maxUsers;
-  }
-}
-
-public final class Chat implements Runnable{
-  private static int nextId;
-  protected int id;
+public final class Chat extends ServerNode{
   private ArrayList<String> messages;
-  protected Chattype type;
-  protected ArrayList<User> users;
-  static public ArrayList<Chat> chats;
 
   public Chat(Chattype type){
-    this.type = type;
-    id = Chat.nextId;
-    Chat.nextId++;
+    super(type);
     messages = new ArrayList<String>();
-    users = new ArrayList<User>();
   }
 
   private void forwardMessage(String message){
@@ -47,25 +25,8 @@ public final class Chat implements Runnable{
       } catch(Exception e){}
     }
   }
-  public boolean addUser(User u){
-    if(users.size() < Chattype.GROUP.maxUsers){
-      users.add(u);
-      return true;
-    }
-    return false;
-  }
-
-  public void removeUser(int uid){
-    for(int i=0;i<users.size();i++){
-      if(users.get(i).getId() == uid){
-        users.remove(i);
-        return;
-      }
-    }
-  }
-
-  public static int getNextId(){
-    return nextId;
+  public boolean addUserToChat(User u){ //Make sure to send all the preexisting messages to the user
+    return addUser(u);
   }
 
   public void run(){
@@ -88,8 +49,10 @@ public final class Chat implements Runnable{
 
         if(msg == null){
           continue;
-        } else if(0 == 1){
-          //Later check for messages requesting to leave chat
+        } else if(msg == "/leave\\"){
+          User u = users.get(i);
+          removeUser(u.getId());
+          ServerHub.hub.addUser(u);
         } else{
           msg = users.get(i).prepareMessage(msg);
           forwardMessage(msg);
