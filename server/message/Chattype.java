@@ -1,6 +1,6 @@
-package message;
+package server.message;
 
-enum Chattype{
+public enum Chattype{
   PRIVATE(2),
   GROUP(16),
   HUB(2048);

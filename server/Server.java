@@ -1,4 +1,6 @@
-import message.*;
+package server;
+
+import server.message.*;
 
 import java.io.InputStreamReader;
 import java.io.BufferedReader;
@@ -13,7 +15,7 @@ class Server{
     Thread sh_thread = new Thread(ServerHub.hub);
     User u = null;
 
-    ServerSocket server_sock = new ServerSocket(8888);
+    ServerSocket server_sock = new ServerSocket(8889);
     Socket client_sock = null;
 
     InputStreamReader in = null;

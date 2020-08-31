@@ -1,6 +1,5 @@
-package message;
+package server.message;
 
-import message.Chat;
 import java.util.ArrayList;
 import java.net.Socket;
 

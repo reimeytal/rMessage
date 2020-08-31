@@ -1,4 +1,4 @@
-package message;
+package server.message;
 
 import java.net.Socket;
 import java.io.InputStreamReader;
