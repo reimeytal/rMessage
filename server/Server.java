@@ -35,7 +35,7 @@ class Server{
       }
 
       u = new User(nameLine, client_sock);
-      sh.addUser2(u);
+      sh.addUser(u);
     }
 
   }

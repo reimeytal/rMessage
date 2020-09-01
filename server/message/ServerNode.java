@@ -18,7 +18,7 @@ public abstract class ServerNode implements Runnable{
     ServerNode.nextId++;
   }
 
-  protected boolean addUser(User user){
+  protected boolean addUser2(User user){
     if(users.size() < type.maxUsers){
       users.add(user);
       return true;
@@ -26,6 +26,8 @@ public abstract class ServerNode implements Runnable{
     user.setServerNode(this);
     return false;
   }
+
+  public abstract boolean addUser(User user);
 
   public static int getNextId(){
     return nextId;

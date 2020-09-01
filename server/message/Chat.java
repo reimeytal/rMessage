@@ -25,8 +25,8 @@ public final class Chat extends ServerNode{
       } catch(Exception e){}
     }
   }
-  public boolean addUserToChat(User u){ //Make sure to send all the preexisting messages to the user
-    return addUser(u);
+  public boolean addUser(User u){ //Make sure to send all the preexisting messages to the user
+    return super.addUser2(u);
   }
 
   public void run(){
@@ -41,7 +41,6 @@ public final class Chat extends ServerNode{
       for(i=0;i<users.size();i++){
         try{
           in = new InputStreamReader(users.get(i).sock.getInputStream());
-          //out = new PrintWriter(users.get(i).sock.getOutputStream());
           msg = br.readLine();
         } catch(Exception e){
           continue;
@@ -49,10 +48,14 @@ public final class Chat extends ServerNode{
 
         if(msg == null){
           continue;
-        } else if(msg == "/leave\\"){
+        } else if(msg == "/lv"){
           User u = users.get(i);
           removeUser(u.getId());
           ServerHub.hub.addUser(u);
+        } else if(msg == "/ll"){
+          try{
+            users.get(i).disconnect();
+          } catch(Exception e){}
         } else{
           msg = users.get(i).prepareMessage(msg);
           forwardMessage(msg);

@@ -43,6 +43,10 @@ public final class User{
     return sock;
   }
 
+  public void disconnect() throws java.io.IOException{
+    sock.close();
+  }
+
   public int getId(){
     return id;
   }
