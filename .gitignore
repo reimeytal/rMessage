@@ -1,3 +1,5 @@
 *.class
 dist
 .DS_Store
+Main.java
+*.jar

@@ -1,6 +1,7 @@
 package server.message;
 
 import java.util.ArrayList;
+import general.message.Chattype;
 
 public abstract class ServerNode implements Runnable{
 
@@ -19,7 +20,7 @@ public abstract class ServerNode implements Runnable{
   }
 
   protected boolean addUser2(User user){
-    if(users.size() < type.maxUsers){
+    if(users.size() < type.getMaxUsers()){
       users.add(user);
       return true;
     }

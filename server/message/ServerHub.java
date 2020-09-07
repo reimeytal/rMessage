@@ -6,6 +6,8 @@ import java.io.BufferedReader;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 
+import general.message.Chattype;
+
 public class ServerHub extends ServerNode{
 
   public static ServerHub hub = new ServerHub();
@@ -26,7 +28,6 @@ public class ServerHub extends ServerNode{
     BufferedReader br = null;
     Socket sock = null;
     String message = null;
-
     do{
       for(i=0;i<users.size();i++){
         try{
@@ -44,6 +45,11 @@ public class ServerHub extends ServerNode{
             }
           } else if(message == "/ll"){
             users.get(i).disconnect();
+          } else if(message == "/cc"){
+            if(ServerNode.getNextId() < 17){
+              Thread nt =  new Thread(new Chat(Chattype.GROUP));
+              nt.start();
+            }
           }
         } catch(Exception e){}
       }

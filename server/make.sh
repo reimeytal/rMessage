@@ -1,7 +1,9 @@
 clear
 javac -classpath .. Server.java
-cd message
+cd ../general/message
 javac -classpath ../.. Chattype.java
+cd ../..
+cd server/message
 javac -classpath ../.. ServerNode.java
 javac -classpath ../.. Chat.java
 javac -classpath ../.. User.java
