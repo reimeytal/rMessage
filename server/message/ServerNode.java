@@ -5,7 +5,7 @@ import general.message.Chattype;
 
 public abstract class ServerNode implements Runnable{
 
-  protected ArrayList<User> users;
+  protected volatile ArrayList<User> users;
   private static int nextId = 0;
   protected int id;
   protected Chattype type;
@@ -35,7 +35,8 @@ public abstract class ServerNode implements Runnable{
   }
 
   public void removeUser(int uid){
-    for(int i=0;i<users.size();i++){
+    int i;
+    for(i=0;i<users.size();i++){
       if(users.get(i).getId() == uid){
         users.get(i).setServerNode(null);
         users.remove(i);

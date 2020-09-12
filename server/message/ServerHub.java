@@ -22,16 +22,15 @@ public class ServerHub extends ServerNode{
 
   public void run(){
     int i;
-
     InputStreamReader in = null;
     PrintWriter out = null;
     BufferedReader br = null;
     Socket sock = null;
     String message = null;
-    do{
-      for(i=0;i<users.size();i++){
+    while(true){
+      for(i=0;i<super.users.size();i++){
         try{
-          sock = users.get(i).getSocket();
+          sock = super.users.get(i).getSocket();
           in = new InputStreamReader(sock.getInputStream());
           br = new BufferedReader(in);
           message = br.readLine();
@@ -39,20 +38,46 @@ public class ServerHub extends ServerNode{
             continue;
           }
           out = new PrintWriter(sock.getOutputStream());
-          if(message.substring(0, 3) == "/jc"){
+          if(message.length() > 2 && message.substring(0, 3).equals("/jc")){
             if(chats.get(Integer.parseInt(message.substring(3))) instanceof Chat){
-              chats.get(Integer.parseInt(message.substring(3))).addUser(users.get(i));
+              if(!chats.get(Integer.parseInt(message.substring(3))).addUser(super.users.get(i))){
+                out.println("0");
+                out.flush();
+              } else{
+                removeUser(users.get(i).getId());
+                out.println("1");
+                out.flush();
+              }
+            } else{
+              out.println("0");
+              out.flush();
             }
-          } else if(message == "/ll"){
-            users.get(i).disconnect();
-          } else if(message == "/cc"){
+          } else if(message.equals("/ll")){
+            super.users.get(i).disconnect();
+          } else if(message.equals("/cc")){
             if(ServerNode.getNextId() < 17){
-              Thread nt =  new Thread(new Chat(Chattype.GROUP));
+              Chat c = new Chat(Chattype.GROUP);
+              Thread nt = new Thread(c);
               nt.start();
+              out.println("1");
+              out.flush();
+            } else{
+              out.println("0");
+              out.flush();
             }
+          } else if(message.equals("/gcl")){
+            int x;
+            String ret = "";
+            for(x=0;x<chats.size();x++){
+              if(chats.get(x) != null && chats.get(x) instanceof Chat){
+                ret += chats.get(x).id + "|";
+              }
+            }
+            out.println(ret);
+            out.flush();
           }
         } catch(Exception e){}
       }
-    } while(true);
+    }
   }
 }

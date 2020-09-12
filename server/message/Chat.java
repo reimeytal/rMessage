@@ -22,7 +22,7 @@ public final class Chat extends ServerNode{
     for(int i=0;i<users.size();i++){
       try{
         out = new PrintWriter(users.get(i).sock.getOutputStream());
-        out.write(message);
+        out.println(message);
         out.flush();
       } catch(Exception e){}
     }
@@ -34,7 +34,7 @@ public final class Chat extends ServerNode{
   public void run(){
 
     InputStreamReader in = null;
-    BufferedReader br = new BufferedReader(in);
+    BufferedReader br = null;
     //PrintWriter out = null;
     String msg = null;
     int i;
@@ -43,6 +43,7 @@ public final class Chat extends ServerNode{
       for(i=0;i<users.size();i++){
         try{
           in = new InputStreamReader(users.get(i).sock.getInputStream());
+          br = new BufferedReader(in);
           msg = br.readLine();
         } catch(Exception e){
           continue;

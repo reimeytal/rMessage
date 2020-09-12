@@ -16,7 +16,7 @@ class Server{
     Thread sh_thread = new Thread(ServerHub.hub);
     User u = null;
 
-    ServerSocket server_sock = new ServerSocket(8889);
+    ServerSocket server_sock = new ServerSocket(8859);
     Socket client_sock = null;
 
     InputStreamReader in = null;
@@ -26,6 +26,8 @@ class Server{
     sh_thread.start();
     while(true){
       client_sock = server_sock.accept();
+      client_sock.setSoTimeout(500);
+
       in = new InputStreamReader(client_sock.getInputStream());
       br = new BufferedReader(in);
       out = new PrintWriter(client_sock.getOutputStream());
@@ -38,9 +40,10 @@ class Server{
       }
 
       u = new User(nameLine, client_sock);
-      sh.addUser(u);
-      out.write(u.getId());
+
+      out.println(Integer.toString(u.getId()));
       out.flush();
+      sh.addUser(u);
     }
 
   }

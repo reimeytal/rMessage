@@ -21,6 +21,10 @@ public final class User{
   }
 
   public boolean setServerNode(ServerNode c){
+    if(c == null){
+      currentServerNode = null;
+      return true;
+    }
     if(c.addUser(this)){
       currentServerNode = c;
       return true;

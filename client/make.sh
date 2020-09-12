@@ -1,7 +1,8 @@
 clear
 cd message
-javac ClientInterface.java
-javac Client.java -classpath ../..
+javac -classpath ../.. ClientInterface.java
+javac -classpath ../.. Client.java
 cd ../..
 cd general/message
-javac Chattype.java
+javac -classpath ../.. Chattype.java
+echo Done
