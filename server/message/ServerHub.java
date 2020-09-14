@@ -1,5 +1,10 @@
 package server.message;
 
+//Things to test
+//Get chat List
+//Disconnect (ll)
+//Return to ServerHub
+
 import java.net.Socket;
 import java.io.InputStreamReader;
 import java.io.BufferedReader;

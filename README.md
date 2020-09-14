@@ -1,2 +1,2 @@
-# message-platform
-A messaging platform
+# rMessage
+A messenger.

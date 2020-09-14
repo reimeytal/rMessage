@@ -1,7 +1,4 @@
 *.class
-dist
-build.sh
 .DS_Store
 Main.java
-*.jar
-ClientFront.java
+OldClientFront.java

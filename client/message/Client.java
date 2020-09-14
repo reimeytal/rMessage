@@ -23,9 +23,9 @@ public class Client{
   private PrintWriter out;
   private ClientInterface ci;
 
-  private Client(){} //Complete
+  private Client(){}
 
-  public void init(ClientInterface ci, String name) throws java.io.IOException{ //Complete (PROBLEM IN THIS METHOD)
+  public boolean init(ClientInterface ci, String name){
     this.ci = ci;
     try{
       socket = new Socket("localhost", 8859);
@@ -34,21 +34,24 @@ public class Client{
       isr = new InputStreamReader(socket.getInputStream());
       in = new BufferedReader(isr);
     } catch(Exception e){
-      System.out.println("CLIENT: Unknown Host");
-      System.exit(0);
+      return false;
     }
     out.println(name);
     out.flush();
-    String rdid = in.readLine();
-    if(rdid == null){
-      System.out.println("CLIENT: Problem with server (did not receive id)");
-      System.exit(0);
+    try{
+      String rdid = in.readLine();
+      if(rdid == null){
+        return false;
+      }
+      serverNodeCT = Chattype.HUB;
+      id = Integer.parseInt(rdid);
+    } catch(Exception e){
+      return false;
     }
-    serverNodeCT = Chattype.HUB;
-    id = Integer.parseInt(rdid);
+    return true;
   }
 
-  public void runClient(){ //Complete
+  public void runClient(){
     while(true){
       try{
         String recv = in.readLine();
@@ -61,7 +64,7 @@ public class Client{
     }
   }
 
-  public void sendMessage(String message){ //Complete
+  public void sendMessage(String message){
     if(serverNodeCT == Chattype.HUB){
       return;
     }
@@ -69,7 +72,7 @@ public class Client{
     out.flush();
   }
 
-  public void leaveChat(){ //Complete
+  public void leaveChat(){
     switch(serverNodeCT){
       case HUB:
         return;
@@ -79,12 +82,12 @@ public class Client{
     }
   }
 
-  public void disconnect(){ //Complete
+  public void disconnect(){
     out.println("/lv");
     out.flush();
   }
 
-  public boolean joinChat(int chatId) throws java.io.IOException{ //Complete
+  public boolean joinChat(int chatId) throws java.io.IOException{
     if(serverNodeCT != Chattype.HUB){
       return false;
     }
@@ -102,7 +105,7 @@ public class Client{
     return success;
   }
 
-  public void getChatList() throws java.io.IOException{ //Complete
+  public void getChatList() throws java.io.IOException{
     if(serverNodeCT != Chattype.HUB){
       return;
     }
@@ -125,7 +128,7 @@ public class Client{
     ci.handleChatList(chatlist);
   }
 
-  public boolean createChat() throws java.io.IOException{ //Complete
+  public boolean createChat() throws java.io.IOException{
     if(serverNodeCT != Chattype.HUB){
       return false;
     }
