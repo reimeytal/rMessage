@@ -7,6 +7,7 @@ javac -classpath .. ClientFront.java
 cd gui
 javac -classpath ../.. LoginPanel.java
 javac -classpath ../.. ChatPanel.java
+javac -classpath ../.. ChatTab.java
 cd ../..
 cd general/message
 javac -classpath ../.. Chattype.java

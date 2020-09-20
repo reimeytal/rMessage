@@ -38,7 +38,6 @@ class Server{
         client_sock.close();
         continue;
       }
-
       u = new User(nameLine, client_sock);
 
       out.println(Integer.toString(u.getId()));

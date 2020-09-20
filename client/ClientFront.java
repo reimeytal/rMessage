@@ -1,16 +1,11 @@
 package client;
 
-import client.message.ClientInterface;
 import client.message.Client;
 
 import client.gui.LoginPanel;
 import client.gui.ChatPanel;
 
 import javax.swing.JFrame;
-import javax.swing.JPanel;
-import javax.swing.JLabel;
-import javax.swing.JTextField;
-import javax.swing.JButton;
 
 public class ClientFront extends JFrame{
   public static void main(String args[]){

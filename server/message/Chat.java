@@ -22,6 +22,7 @@ public final class Chat extends ServerNode{
     for(int i=0;i<users.size();i++){
       try{
         out = new PrintWriter(users.get(i).sock.getOutputStream());
+        out.println("/fw");
         out.println(message);
         out.flush();
       } catch(Exception e){}
@@ -51,11 +52,11 @@ public final class Chat extends ServerNode{
 
         if(msg == null){
           continue;
-        } else if(msg == "/lv"){
+        } else if(msg.equals("/lv")){
           User u = users.get(i);
           removeUser(u.getId());
           ServerHub.hub.addUser(u);
-        } else if(msg == "/ll"){
+        } else if(msg.equals("/ll")){
           try{
             users.get(i).disconnect();
           } catch(Exception e){}

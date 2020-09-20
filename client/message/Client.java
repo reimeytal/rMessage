@@ -10,9 +10,9 @@ import general.message.Chattype;
 
 import java.net.Socket;
 
-public class Client{
+public class Client implements Runnable{
 
-  public static Client client = new Client();
+  public static volatile Client client = new Client();
 
   private int id;
   private int serverNodeId;
@@ -29,7 +29,7 @@ public class Client{
     this.ci = ci;
     try{
       socket = new Socket("localhost", 8859);
-      socket.setSoTimeout(3000);
+      socket.setSoTimeout(0);
       out = new PrintWriter(socket.getOutputStream());
       isr = new InputStreamReader(socket.getInputStream());
       in = new BufferedReader(isr);
@@ -51,9 +51,21 @@ public class Client{
     return true;
   }
 
-  public void runClient(){
+  public Chattype getServerNodeCT(){
+    return serverNodeCT;
+  }
+
+  public int getServerNodeID(){
+    return serverNodeId;
+  }
+
+  public void run(){
     while(true){
       try{
+        if(!in.readLine().equals("/fw")){
+          Thread.sleep(1);
+          continue;
+        }
         String recv = in.readLine();
         if(recv != null){
           ci.handleMessage(recv);
@@ -77,13 +89,14 @@ public class Client{
       case HUB:
         return;
       default:
-        out.println("/ll");
+        out.println("/lv");
         out.flush();
+        serverNodeCT = Chattype.HUB;
     }
   }
 
   public void disconnect(){
-    out.println("/lv");
+    out.println("/ll");
     out.flush();
   }
 
@@ -105,7 +118,7 @@ public class Client{
     return success;
   }
 
-  public void getChatList() throws java.io.IOException{
+  public void getChatList(){
     if(serverNodeCT != Chattype.HUB){
       return;
     }
@@ -113,9 +126,14 @@ public class Client{
     out.flush();
 
     int i;
-    String ret = in.readLine();
-    String cla[] = ret.split("|",  128);
-
+    String ret = "";
+    try{
+      ret = in.readLine();
+    } catch(Exception e){
+      System.out.println(e);
+      System.exit(0);
+    }
+    String cla[] = ret.split("_");
     ArrayList<Integer> chatlist = new ArrayList<Integer>();
 
     if(ret == null){

@@ -1,5 +1,8 @@
 package client.gui;
 
+//Fix cursor
+//Center components
+
 import client.message.Client;
 import client.ClientFront;
 
@@ -62,6 +65,7 @@ public class LoginPanel extends JPanel implements ActionListener{ //G
       add(error);
     } else{
       parent.remove(this);
+      cp.init();
       parent.add(cp);
     }
     parent.repaint();
@@ -73,6 +77,8 @@ public class LoginPanel extends JPanel implements ActionListener{ //G
       try{
         handleLogin();
       } catch(Exception exception){
+        error.setText("Server Error");
+        error.setBounds(212, 265, 150, 50);
         add(error);
       }
     }
